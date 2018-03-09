@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="axon-trader-webui-2.0-SNAPSHOT">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="axon-trader-orders-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-orders/axon-trader-orders">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axon-trader-core-api-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-core-api/axon-trader-core-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axon-trader-trade-engine-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-trade-engine/axon-trader-trade-engine">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axon-trader-users-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-users/axon-trader-users">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axon-trader-users-query-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-users-query/axon-trader-users-query">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axon-trader-companies-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-companies/axon-trader-companies">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axon-trader-infrastructure-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-infrastructure/axon-trader-infrastructure">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axon-trader-query-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-query/axon-trader-query">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axon-trader-external-listeners-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/axon-trader-external-listeners/axon-trader-external-listeners">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="axon-trader-webui"/>
+        <property name="java-output-path" value="/axon-trader-webui/target/classes"/>
+    </wb-module>
+</project-modules>
