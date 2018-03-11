@@ -16,11 +16,15 @@
 
 package org.axonframework.samples.trader.query.users.config;
 
+import org.axonframework.common.transaction.NoTransactionManager;
 import org.axonframework.eventhandling.EventProcessor;
 import org.axonframework.eventhandling.SimpleEventHandlerInvoker;
 import org.axonframework.eventhandling.SubscribingEventProcessor;
+import org.axonframework.eventhandling.TrackingEventProcessor;
+import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.samples.trader.query.users.UserListener;
+import org.axonframework.samples.trader.query.users.UserTrackingListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +37,12 @@ public class UsersQueryConfig {
 
     @Autowired
     private UserListener userListener;
+    
+    @Autowired
+    private UserTrackingListener userTrackingListener;
+    
+    @Autowired
+    private TokenStore tokenStore;
 
     @Bean
     public EventProcessor usersQueryEventProcessor() {
@@ -44,5 +54,16 @@ public class UsersQueryConfig {
 
         return eventProcessor;
     }
+    @Bean
+    public EventProcessor usersTrackingTokenProcessor() {
+        TrackingEventProcessor eventProcessor = new TrackingEventProcessor("usersQueryEventProcessor",
+                                                                                 new SimpleEventHandlerInvoker(
+                                                                                		 userTrackingListener),
+                                                                                 eventStore,tokenStore,NoTransactionManager.INSTANCE);
+        eventProcessor.start();
+
+        return eventProcessor;
+    }
+
 
 }
