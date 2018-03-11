@@ -18,6 +18,12 @@ package org.axonframework.samples.trader.users.config;
 
 import org.axonframework.commandhandling.model.Repository;
 import org.axonframework.common.caching.Cache;
+import org.axonframework.common.transaction.NoTransactionManager;
+import org.axonframework.eventhandling.EventProcessor;
+import org.axonframework.eventhandling.SimpleEventHandlerInvoker;
+import org.axonframework.eventhandling.SubscribingEventProcessor;
+import org.axonframework.eventhandling.TrackingEventProcessor;
+import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventsourcing.AggregateFactory;
 import org.axonframework.eventsourcing.CachingEventSourcingRepository;
 import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
@@ -42,6 +48,10 @@ public class UsersConfig {
 
     @Autowired
     private Cache cache;
+    
+    @Autowired
+    private TokenStore tokenStore;
+    
 
     @Bean
     @Scope("prototype")
@@ -79,4 +89,6 @@ public class UsersConfig {
 
         return userCommandHandler;
     }
+    
+ 
 }

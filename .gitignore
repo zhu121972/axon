@@ -14,3 +14,4 @@ build
 target/
 out/*
 rebel.xml
+/users/

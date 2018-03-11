@@ -18,6 +18,7 @@ package org.axonframework.samples.trader.users.command;
 
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.commandhandling.model.AggregateRoot;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.samples.trader.api.users.UserAuthenticatedEvent;
 import org.axonframework.samples.trader.api.users.UserCreatedEvent;
@@ -29,6 +30,7 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 /**
  * @author Jettro Coenradie
  */
+
 @AggregateRoot
 public class User {
     private static final long serialVersionUID = 3291411359839192350L;

@@ -16,10 +16,14 @@
 
 package org.axonframework.samples.trader.infra.config;
 
+import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.mongo.eventhandling.saga.repository.MongoSagaStore;
 import org.axonframework.mongo.eventsourcing.eventstore.MongoEventStorageEngine;
+import org.axonframework.mongo.eventsourcing.tokenstore.MongoTokenStore;
+import org.axonframework.serialization.Serializer;
+import org.axonframework.serialization.xml.XStreamSerializer;
 import org.axonframework.mongo.MongoTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,11 +34,19 @@ import org.springframework.context.annotation.Profile;
 @Profile("mongodb")
 public class CQRSInfrastructureMongoDBConfig {
 
-    @Autowired
-    private MongoTemplate eventStoreMongoTemplate;
+ //   @Autowired
+  //  private MongoTemplate eventStoreMongoTemplate;
 
     @Autowired
-    private org.axonframework.mongo.MongoTemplate;
+    private MongoTemplate mongoTemplate;
+    
+    @Autowired
+    private TokenStore tokenStore;
+    
+    @Autowired
+    private Serializer serializer;
+    
+  
 
     @Bean
     public EventStore eventStore() {
@@ -43,11 +55,22 @@ public class CQRSInfrastructureMongoDBConfig {
 
     @Bean
     public MongoEventStorageEngine eventStorageEngine() {
-        return new MongoEventStorageEngine(eventStoreMongoTemplate);
+        return new MongoEventStorageEngine(mongoTemplate);
     }
-
+    
+   @Bean
+   public TokenStore tokenStore() {
+        return new MongoTokenStore(mongoTemplate, serializer);
+    }
+    
+    @Bean
+    public Serializer serializer() {
+        return new XStreamSerializer();
+    }
+    
+    
     @Bean
     public MongoSagaStore sagaRepository() {
-        return new MongoSagaStore(sagaMongoTemplate);
+        return new MongoSagaStore(mongoTemplate);
     }
 }

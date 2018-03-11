@@ -17,7 +17,7 @@
 package org.axonframework.samples.trader.infra.config;
 
 import com.mongodb.MongoClient;
-import org.axonframework.mongo.eventsourcing.eventstore.DefaultMongoTemplate;
+import org.axonframework.mongo.DefaultMongoTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -54,15 +54,16 @@ public class PersistenceInfrastructureConfig {
     @Bean
     @Profile("mongodb")
     public org.axonframework.mongo.MongoTemplate mongoTemplate() throws UnknownHostException {
-        return new DefaultMongoTemplate(mongo(), "axontrader", "domainevents", "snapshotevents");
+      //  return new DefaultMongoTemplate(mongo(), "axontrader", "domainevents", "snapshotevents");
+        return new DefaultMongoTemplate(mongo(), "axontrader");
     }
 
-    @Bean
-    @Profile("mongodb")
-    public org.axonframework.mongo.MongoTemplate mongoSagaTemplate()
-            throws UnknownHostException {
-        return new org.axonframework.mongo.eventhandling.saga.repository.DefaultMongoTemplate(mongo(),
-                                                                                              "axontrader",
-                                                                                              "sagas");
-    }
+  //  @Bean
+  //  @Profile("mongodb")
+  //  public org.axonframework.mongo.MongoTemplate mongoSagaTemplate()
+  //          throws UnknownHostException {
+   //     return new org.axonframework.mongo.eventhandling.saga.repository.DefaultMongoTemplate(mongo(),
+      //                                                                                        "axontrader",
+       //                                                                                       "sagas");
+   // }
 }

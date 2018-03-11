@@ -18,15 +18,19 @@ package org.axonframework.samples.trader.orders.config;
 
 import org.axonframework.commandhandling.model.Repository;
 import org.axonframework.common.caching.Cache;
+import org.axonframework.common.transaction.NoTransactionManager;
+import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.EventProcessor;
 import org.axonframework.eventhandling.SimpleEventHandlerInvoker;
 import org.axonframework.eventhandling.SubscribingEventProcessor;
+import org.axonframework.eventhandling.TrackingEventProcessor;
 import org.axonframework.eventhandling.saga.AbstractSagaManager;
 import org.axonframework.eventhandling.saga.AnnotatedSagaManager;
 import org.axonframework.eventhandling.saga.ResourceInjector;
 import org.axonframework.eventhandling.saga.SagaRepository;
 import org.axonframework.eventhandling.saga.repository.AnnotatedSagaRepository;
 import org.axonframework.eventhandling.saga.repository.SagaStore;
+import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventsourcing.AggregateFactory;
 import org.axonframework.eventsourcing.CachingEventSourcingRepository;
 import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
@@ -59,6 +63,12 @@ public class OrdersConfig {
 
     @Autowired
     private Cache cache;
+    
+
+    
+
+    
+    
 
     @Autowired
     private PortfolioManagementUserListener portfolioManagementUserListener;
@@ -180,12 +190,22 @@ public class OrdersConfig {
 
     @Bean
     public EventProcessor ordersEventProcessor() {
-        SubscribingEventProcessor eventProcessor = new SubscribingEventProcessor("ordersEventProcessor",
+    	 SubscribingEventProcessor eventProcessor = new SubscribingEventProcessor("ordersEventProcessor",
                                                                                  new SimpleEventHandlerInvoker(
                                                                                          portfolioManagementUserListener),
                                                                                  eventStore);
-        eventProcessor.start();
-
-        return eventProcessor;
+                                                                               
+    	
+    	/* TrackingEventProcessor trackedEventProcessor = new TrackingEventProcessor("ordersEventProcessor",
+        																new SimpleEventHandlerInvoker(
+        																		portfolioManagementUserListener),
+        															eventStore,	
+        															tokenStore,NoTransactionManager.INSTANCE);
+                                                        
+        trackedEventProcessor.start();
+        */
+      eventProcessor.start();
+       return eventProcessor ;
+       //return trackedEventProcessor;
     }
 }

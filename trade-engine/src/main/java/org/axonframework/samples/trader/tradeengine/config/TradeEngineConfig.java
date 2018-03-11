@@ -69,7 +69,7 @@ public class TradeEngineConfig {
     public Repository<OrderBook> orderBookRepository() {
         EventCountSnapshotTriggerDefinition snapshotTriggerDefinition = new EventCountSnapshotTriggerDefinition(
                 snapshotter,
-                50);
+                3);
 
         CachingEventSourcingRepository<OrderBook> repository = new CachingEventSourcingRepository<>(
                 orderBookAggregateFactory(),
