@@ -41,11 +41,10 @@ public class CQRSInfrastructureMongoDBConfig {
     private MongoTemplate mongoTemplate;
     
     @Autowired
-    private TokenStore tokenStore;
-    
-    @Autowired
     private Serializer serializer;
     
+    @Autowired
+    private TokenStore tokenStore;
   
 
     @Bean
@@ -58,15 +57,16 @@ public class CQRSInfrastructureMongoDBConfig {
         return new MongoEventStorageEngine(mongoTemplate);
     }
     
+    @Bean
+    public Serializer serializer() {
+        return new XStreamSerializer();
+    }
+     
    @Bean
    public TokenStore tokenStore() {
         return new MongoTokenStore(mongoTemplate, serializer);
     }
     
-    @Bean
-    public Serializer serializer() {
-        return new XStreamSerializer();
-    }
     
     
     @Bean
