@@ -38,7 +38,27 @@
             <artifactId>axon-trader-users-query</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+    		<groupId>org.axonframework</groupId>
+   			<artifactId>axon-amqp</artifactId>
+   			<version>${axon.version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-amqp</artifactId>
+    		<version>1.5.7.RELEASE</version>
+    		
+		</dependency>
+		<dependency>
+    		<groupId>org.axonframework</groupId>
+    		<artifactId>axon-spring-boot-autoconfigure</artifactId>
+    		<version>3.1</version>
+</dependency>
+        
+        
+        
+        
+        
         <!-- other dependencies-->
         <dependency>
             <groupId>org.axonframework</groupId>

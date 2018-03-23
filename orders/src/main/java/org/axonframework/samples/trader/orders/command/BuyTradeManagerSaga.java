@@ -19,6 +19,7 @@ package org.axonframework.samples.trader.orders.command;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.commandhandling.GenericCommandMessage;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.saga.EndSaga;
 import org.axonframework.eventhandling.saga.SagaEventHandler;
 import org.axonframework.eventhandling.saga.StartSaga;
@@ -35,6 +36,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jettro Coenradie
  */
+@ProcessingGroup("order")
 @Saga
 public class BuyTradeManagerSaga extends TradeManagerSaga {
 

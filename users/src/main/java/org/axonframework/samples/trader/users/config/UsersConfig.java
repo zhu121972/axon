@@ -71,7 +71,7 @@ public class UsersConfig {
     public Repository<User> userRepository() {
         EventCountSnapshotTriggerDefinition snapshotTriggerDefinition = new EventCountSnapshotTriggerDefinition(
                 snapshotter,
-                50);
+                1);
 
         CachingEventSourcingRepository<User> repository = new CachingEventSourcingRepository<>(userAggregateFactory(),
                                                                                                eventStore,

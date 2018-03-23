@@ -110,7 +110,7 @@ public class OrdersConfig {
     public Repository<Portfolio> portfolioRepository() {
         EventCountSnapshotTriggerDefinition snapshotTriggerDefinition = new EventCountSnapshotTriggerDefinition(
                 snapshotter,
-                50);
+                1);
 
         CachingEventSourcingRepository<Portfolio> repository = new CachingEventSourcingRepository<>(
                 portfolioAggregateFactory(),
