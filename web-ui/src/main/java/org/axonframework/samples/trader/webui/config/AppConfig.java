@@ -22,6 +22,7 @@ import org.axonframework.samples.trader.infra.config.PersistenceInfrastructureCo
 import org.axonframework.samples.trader.listener.config.ExternalListenersConfig;
 import org.axonframework.samples.trader.orders.config.OrdersConfig;
 import org.axonframework.samples.trader.query.config.QueryConfig;
+import org.axonframework.samples.trader.query.users.config.Amqpconfig;
 import org.axonframework.samples.trader.query.users.config.UsersQueryConfig;
 import org.axonframework.samples.trader.tradeengine.config.TradeEngineConfig;
 import org.axonframework.samples.trader.users.config.UsersConfig;
@@ -38,6 +39,7 @@ import org.springframework.context.annotation.ImportResource;
         OrdersConfig.class,
         ExternalListenersConfig.class,
         UsersConfig.class,
+        Amqpconfig.class,
         UsersQueryConfig.class,
         QueryConfig.class
 })

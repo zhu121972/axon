@@ -18,13 +18,16 @@ package org.axonframework.samples.trader.query.users.config;
 
 import org.axonframework.common.transaction.NoTransactionManager;
 import org.axonframework.eventhandling.EventProcessor;
+import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.eventhandling.SimpleEventHandlerInvoker;
 import org.axonframework.eventhandling.SubscribingEventProcessor;
 import org.axonframework.eventhandling.TrackingEventProcessor;
 import org.axonframework.eventhandling.tokenstore.TokenStore;
 import org.axonframework.eventsourcing.eventstore.EventStore;
+import org.axonframework.samples.trader.query.users.UserAmqpListerner;
 import org.axonframework.samples.trader.query.users.UserListener;
 import org.axonframework.samples.trader.query.users.UserTrackingListener;
+import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,9 +44,18 @@ public class UsersQueryConfig {
     @Autowired
     private UserTrackingListener userTrackingListener;
     
+//    @Autowired
+ //   private UserAmqpListerner userAmqpListener;
+    
     @Autowired
     private TokenStore tokenStore;
-
+    
+ //   @Autowired
+ //   private SimpleEventBus AmqpEventBus;
+    
+  //  @Autowired
+ //   private AmqpAdmin amqpAdmin;
+    
     @Bean
     public EventProcessor usersQueryEventProcessor() {
         SubscribingEventProcessor eventProcessor = new SubscribingEventProcessor("usersQueryEventProcessor",
@@ -64,6 +76,16 @@ public class UsersQueryConfig {
 
         return eventProcessor;
     }
-
-
+    
+ //   @Bean
+ ///   public EventProcessor usersAmqpProcessor() {
+//        TrackingEventProcessor eventProcessor = new TrackingEventProcessor("usersAmqpEventProcessor",
+ //                                                                                new SimpleEventHandlerInvoker(
+ //                                                                               		 userAmqpListener),
+ //                                                                                AmqpEventBus,tokenStore,NoTransactionManager.INSTANCE);
+//   /     eventProcessor.start();
+//
+//        return eventProcessor;
+//    }
+    
 }
