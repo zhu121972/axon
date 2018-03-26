@@ -16,6 +16,8 @@
 
 package org.axonframework.samples.trader.query.users.config;
 
+import org.axonframework.amqp.eventhandling.AMQPMessageConverter;
+import org.axonframework.amqp.eventhandling.spring.SpringAMQPPublisher;
 import org.axonframework.common.transaction.NoTransactionManager;
 import org.axonframework.eventhandling.EventProcessor;
 import org.axonframework.eventhandling.SimpleEventBus;
@@ -28,6 +30,8 @@ import org.axonframework.samples.trader.query.users.UserAmqpListerner;
 import org.axonframework.samples.trader.query.users.UserListener;
 import org.axonframework.samples.trader.query.users.UserTrackingListener;
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,17 +48,25 @@ public class UsersQueryConfig {
     @Autowired
     private UserTrackingListener userTrackingListener;
     
-//    @Autowired
- //   private UserAmqpListerner userAmqpListener;
+    @Autowired
+    private UserAmqpListerner userAmqpListener;
     
     @Autowired
     private TokenStore tokenStore;
     
- //   @Autowired
- //   private SimpleEventBus AmqpEventBus;
+    @Autowired
+    private SimpleEventBus AmqpEventBus;
     
   //  @Autowired
+ //   private SpringAMQPPublisher publisher;
+  //  @Autowired
  //   private AmqpAdmin amqpAdmin;
+    
+    @Autowired
+    private ConnectionFactory connectionFactory;
+    
+    @Autowired
+    private AMQPMessageConverter amqpMessageConverter;
     
     @Bean
     public EventProcessor usersQueryEventProcessor() {
@@ -62,7 +74,18 @@ public class UsersQueryConfig {
                                                                                  new SimpleEventHandlerInvoker(
                                                                                          userListener),
                                                                                  eventStore);
-        eventProcessor.start();
+                                                                                 
+    	/*  SubscribingEventProcessor eventProcessor = new SubscribingEventProcessor("usersAmqpEventProcessor",
+                  new SimpleEventHandlerInvoker(
+                 		 userAmqpListener),
+                  AmqpEventBus);*/
+    	  eventProcessor.start();
+        SpringAMQPPublisher publisher = new SpringAMQPPublisher(eventStore);
+        publisher.setExchangeName("Axon.EventBus");
+        publisher.setConnectionFactory(connectionFactory);
+        publisher.setMessageConverter(amqpMessageConverter); 
+        publisher.start();
+        
 
         return eventProcessor;
     }
@@ -77,15 +100,16 @@ public class UsersQueryConfig {
         return eventProcessor;
     }
     
- //   @Bean
- ///   public EventProcessor usersAmqpProcessor() {
-//        TrackingEventProcessor eventProcessor = new TrackingEventProcessor("usersAmqpEventProcessor",
- //                                                                                new SimpleEventHandlerInvoker(
- //                                                                               		 userAmqpListener),
- //                                                                                AmqpEventBus,tokenStore,NoTransactionManager.INSTANCE);
-//   /     eventProcessor.start();
-//
-//        return eventProcessor;
-//    }
+   @Bean
+    public EventProcessor usersAmqpProcessor() {
+	   SubscribingEventProcessor eventProcessor = new SubscribingEventProcessor("usersAmqpEventProcessor",
+                                                                                 new SimpleEventHandlerInvoker(
+                                                                                		 userAmqpListener),
+                                                                                 AmqpEventBus);
+     eventProcessor.start();
+     
+        return eventProcessor;
+    }
+    
     
 }
