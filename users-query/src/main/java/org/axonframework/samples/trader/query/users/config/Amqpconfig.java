@@ -8,7 +8,9 @@ import org.axonframework.amqp.eventhandling.PackageRoutingKeyResolver;
 import org.axonframework.amqp.eventhandling.RoutingKeyResolver;
 import org.axonframework.amqp.eventhandling.spring.SpringAMQPMessageSource;
 import org.axonframework.amqp.eventhandling.spring.SpringAMQPPublisher;
+import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.SimpleEventBus;
+import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.serialization.Serializer;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -32,7 +34,10 @@ public class Amqpconfig {
 	      
 	      @Autowired
 	      RoutingKeyResolver routingKeyResolver;
-	    
+	      
+	      @Autowired
+		    private SimpleEventBus AmqpEventBus;
+	      
 	    @Autowired
 	    private SpringAMQPMessageSource springAMQPMessageSource;
 
@@ -40,16 +45,16 @@ public class Amqpconfig {
 	    private AMQPMessageConverter messageConverter;
 
 	  
-//	    @Autowired
-//	    private SpringAMQPPublisher AMQPPublisher;
-	    
 	    @Autowired
-	    private SimpleEventBus AmqpEventBus;
+	    private SpringAMQPPublisher AMQPPublisher;
+	    
+	  
 	    
 	    @Autowired
 	    private ConnectionFactory connectionFactory;
 	    
-	    
+	//    @Autowired
+	  // private EventStore eventStore;
 
 	    @Bean
 	    public RoutingKeyResolver routingKeyResolver() {
@@ -103,14 +108,14 @@ public class Amqpconfig {
 	    }
 	    
 	    
-	/*    @Bean(initMethod = "start", destroyMethod = "shutDown")
-	    public SpringAMQPPublisher amqpBridge(SimpleEventBus SimpleEventBus, ConnectionFactory connectionFactory,  AMQPMessageConverter amqpMessageConverter) {
-	        SpringAMQPPublisher publisher = new SpringAMQPPublisher(SimpleEventBus);
+	   @Bean(initMethod = "start", destroyMethod = "shutDown")
+	    public SpringAMQPPublisher amqpBridge(SimpleEventBus AmqpEventBus, ConnectionFactory connectionFactory,  AMQPMessageConverter amqpMessageConverter) {
+	        SpringAMQPPublisher publisher = new SpringAMQPPublisher(AmqpEventBus);
 	        publisher.setExchangeName("Axon.EventBus");
 	        publisher.setConnectionFactory(connectionFactory);
 	        publisher.setMessageConverter(amqpMessageConverter); 
 	        return publisher;
 	    }
-	  */ 
+	   
 	    
 }

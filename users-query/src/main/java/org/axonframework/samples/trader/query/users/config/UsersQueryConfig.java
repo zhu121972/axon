@@ -80,12 +80,7 @@ public class UsersQueryConfig {
                  		 userAmqpListener),
                   AmqpEventBus);*/
     	  eventProcessor.start();
-        SpringAMQPPublisher publisher = new SpringAMQPPublisher(eventStore);
-        publisher.setExchangeName("Axon.EventBus");
-        publisher.setConnectionFactory(connectionFactory);
-        publisher.setMessageConverter(amqpMessageConverter); 
-        publisher.start();
-        
+     
 
         return eventProcessor;
     }
