@@ -17,6 +17,7 @@
 package org.axonframework.samples.trader.query.users.config;
 
 import org.axonframework.amqp.eventhandling.AMQPMessageConverter;
+import org.axonframework.amqp.eventhandling.spring.SpringAMQPMessageSource;
 import org.axonframework.amqp.eventhandling.spring.SpringAMQPPublisher;
 import org.axonframework.common.transaction.NoTransactionManager;
 import org.axonframework.eventhandling.EventProcessor;
@@ -29,12 +30,17 @@ import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.samples.trader.query.users.UserAmqpListerner;
 import org.axonframework.samples.trader.query.users.UserListener;
 import org.axonframework.samples.trader.query.users.UserTrackingListener;
+import org.axonframework.serialization.Serializer;
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.rabbitmq.client.Channel;
 
 @Configuration
 public class UsersQueryConfig {
@@ -56,6 +62,10 @@ public class UsersQueryConfig {
     
     @Autowired
     private SimpleEventBus AmqpEventBus;
+    
+   // @Autowired
+ //   private  SpringAMQPMessageSource mq;
+   
     
   //  @Autowired
  //   private SpringAMQPPublisher publisher;
@@ -95,6 +105,9 @@ public class UsersQueryConfig {
         return eventProcessor;
     }
     
+  
+     
+    
    @Bean
     public EventProcessor usersAmqpProcessor() {
 	   SubscribingEventProcessor eventProcessor = new SubscribingEventProcessor("usersAmqpEventProcessor",
@@ -103,8 +116,8 @@ public class UsersQueryConfig {
                                                                                  AmqpEventBus);
      eventProcessor.start();
      
-        return eventProcessor;
+     return eventProcessor;
     }
     
-    
+  
 }

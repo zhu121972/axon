@@ -2,6 +2,9 @@ package org.axonframework.samples.trader.query.users.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.rabbitmq.client.Channel;
+
 import org.axonframework.amqp.eventhandling.AMQPMessageConverter;
 import org.axonframework.amqp.eventhandling.DefaultAMQPMessageConverter;
 import org.axonframework.amqp.eventhandling.PackageRoutingKeyResolver;
@@ -15,6 +18,7 @@ import org.axonframework.serialization.Serializer;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -26,20 +30,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Configuration
 public class Amqpconfig {
 
-	 //   @Autowired
-	 //   private SimpleMessageListenerContainer listenerContainer;
+	    @Autowired
+	    private SimpleMessageListenerContainer listenerContainer;
 
 	     @Autowired
 	     private Serializer serializer;
 	      
-	      @Autowired
-	      RoutingKeyResolver routingKeyResolver;
+	     @Autowired
+	     RoutingKeyResolver routingKeyResolver;
 	      
-	      @Autowired
-		    private SimpleEventBus AmqpEventBus;
+	     @Autowired
+		 private SimpleEventBus AmqpEventBus;
 	      
-	    @Autowired
-	    private SpringAMQPMessageSource springAMQPMessageSource;
+	  
 
 	    @Autowired
 	    private AMQPMessageConverter messageConverter;
@@ -48,7 +51,10 @@ public class Amqpconfig {
 	    @Autowired
 	    private SpringAMQPPublisher AMQPPublisher;
 	    
-	  
+	    
+	//    @Autowired
+	  //  private SimpleMessageListenerContainer listenerContainer;
+
 	    
 	    @Autowired
 	    private ConnectionFactory connectionFactory;
@@ -67,10 +73,11 @@ public class Amqpconfig {
             return new DefaultAMQPMessageConverter(serializer, routingKeyResolver, true);
         }    
 	    
-	    @Bean
+	/*    @Bean
        public SpringAMQPMessageSource springAMQPMessageSource() {
             return new SpringAMQPMessageSource(messageConverter);
         }
+        */
 	    
 	    @Bean
 	    public ConnectionFactory connectionFactory() {	   
@@ -117,5 +124,15 @@ public class Amqpconfig {
 	        return publisher;
 	    }
 	   
-	    
+	   //@Bean
+       //public SimpleMessageListenerContainer rabbitListener(ConnectionFactory connectionFactory) {
+       //    SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer(connectionFactory);
+          // listenerContainer.setQueueNames("testQueue");
+         //  listenerContainer.setAutoStartup(false);
+         //  listenerContainer.setMessageListener(AmqpEventBus);
+         //  listenerContainer.start();
+          // return listenerContainer;
+      // }
+	
+	   
 }

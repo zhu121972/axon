@@ -17,10 +17,12 @@
 package org.axonframework.samples.trader.query.users;
 
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.samples.trader.query.users.repositories.UserQueryRepository;
 import org.axonframework.samples.trader.api.users.UserCreatedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import static org.axonframework.eventhandling.GenericEventMessage.asEventMessage;
 
 /**
  * @author Jettro Coenradie
@@ -29,7 +31,8 @@ import org.springframework.stereotype.Component;
 public class UserListener {
 
     private UserQueryRepository userRepository;
-
+    
+    private SimpleEventBus eventBus;
     @EventHandler
     public void handleUserCreated(UserCreatedEvent event) {
         UserEntry userEntry = new UserEntry();
@@ -37,6 +40,7 @@ public class UserListener {
         userEntry.setName(event.getName());
         userEntry.setUsername(event.getUsername());
         userEntry.setPassword(event.getPassword());
+        eventBus.publish(asEventMessage(event));
 
         userRepository.save(userEntry);
     }
@@ -44,5 +48,10 @@ public class UserListener {
     @Autowired
     public void setUserRepository(UserQueryRepository userRepository) {
         this.userRepository = userRepository;
+    }
+    
+    @Autowired
+    public void setUserRepository(SimpleEventBus eventBus) {
+        this.eventBus = eventBus;
     }
 }
