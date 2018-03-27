@@ -14,6 +14,7 @@ import org.axonframework.amqp.eventhandling.spring.SpringAMQPPublisher;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.eventsourcing.eventstore.EventStore;
+import org.axonframework.samples.trader.query.users.RabbitListener;
 import org.axonframework.serialization.Serializer;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -30,8 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Configuration
 public class Amqpconfig {
 
-	    @Autowired
-	    private SimpleMessageListenerContainer listenerContainer;
 
 	     @Autowired
 	     private Serializer serializer;
@@ -51,6 +50,8 @@ public class Amqpconfig {
 	    @Autowired
 	    private SpringAMQPPublisher AMQPPublisher;
 	    
+	    @Autowired
+	    private  RabbitListener rabbitListener;
 	    
 	//    @Autowired
 	  //  private SimpleMessageListenerContainer listenerContainer;
@@ -124,15 +125,11 @@ public class Amqpconfig {
 	        return publisher;
 	    }
 	   
-	   //@Bean
-       //public SimpleMessageListenerContainer rabbitListener(ConnectionFactory connectionFactory) {
-       //    SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer(connectionFactory);
-          // listenerContainer.setQueueNames("testQueue");
-         //  listenerContainer.setAutoStartup(false);
-         //  listenerContainer.setMessageListener(AmqpEventBus);
-         //  listenerContainer.start();
-          // return listenerContainer;
-      // }
+	   @Bean
+       public  RabbitListener rabbitListener(ConnectionFactory connectionFactory, SimpleEventBus eventBus) {
+           
+           return new RabbitListener( connectionFactory ,eventBus);
+       }
 	
 	   
 }
