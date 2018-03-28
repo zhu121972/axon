@@ -14,7 +14,8 @@ import org.axonframework.amqp.eventhandling.spring.SpringAMQPPublisher;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.eventsourcing.eventstore.EventStore;
-import org.axonframework.samples.trader.query.users.RabbitListener;
+
+import org.axonframework.samples.trader.query.users.RabbitListenerInit;
 import org.axonframework.serialization.Serializer;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -50,15 +51,13 @@ public class Amqpconfig {
 	    @Autowired
 	    private SpringAMQPPublisher AMQPPublisher;
 	    
-	    @Autowired
-	    private  RabbitListener rabbitListener;
-	    
-	//    @Autowired
-	  //  private SimpleMessageListenerContainer listenerContainer;
 
 	    
 	    @Autowired
 	    private ConnectionFactory connectionFactory;
+	    
+	   @Autowired
+	   private  RabbitListenerInit rabbitListenerInit;
 	    
 	//    @Autowired
 	  // private EventStore eventStore;
@@ -126,9 +125,9 @@ public class Amqpconfig {
 	    }
 	   
 	   @Bean
-       public  RabbitListener rabbitListener(ConnectionFactory connectionFactory, SimpleEventBus eventBus) {
+       public  RabbitListenerInit rabbitListenerInit(ConnectionFactory connectionFactory, SimpleEventBus AmqpEventBus) {
            
-           return new RabbitListener( connectionFactory ,eventBus);
+           return new RabbitListenerInit(connectionFactory, AmqpEventBus);
        }
 	
 	   
