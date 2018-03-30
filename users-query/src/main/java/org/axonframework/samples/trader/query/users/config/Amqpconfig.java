@@ -56,8 +56,8 @@ public class Amqpconfig {
 	    @Autowired
 	    private ConnectionFactory connectionFactory;
 	    
-	   @Autowired
-	   private  RabbitListenerInit rabbitListenerInit;
+	 //  @Autowired
+	 //  private  RabbitListenerInit rabbitListenerInit;
 	    
 	//    @Autowired
 	  // private EventStore eventStore;
@@ -73,11 +73,11 @@ public class Amqpconfig {
             return new DefaultAMQPMessageConverter(serializer, routingKeyResolver, true);
         }    
 	    
-	/*    @Bean
+	    @Bean
        public SpringAMQPMessageSource springAMQPMessageSource() {
             return new SpringAMQPMessageSource(messageConverter);
         }
-        */
+        
 	    
 	    @Bean
 	    public ConnectionFactory connectionFactory() {	   
@@ -88,21 +88,12 @@ public class Amqpconfig {
 	    	con.setPassword("guest");
 	        return con;
 	    }
-	    
-	 /*   @Bean
-        public SimpleMessageListenerContainer rabbitListener() {
-            SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer(connectionFactory());
-            listenerContainer.setQueueNames("testQueue");
-            listenerContainer.setAutoStartup(false);
-            return listenerContainer;
-        }
-	    */
 
 	    
 	    @Bean
         public AmqpAdmin amqpAdmin() {
 	    	 AmqpAdmin	t = new RabbitAdmin(connectionFactory());
-	    	 t.declareQueue(new Queue("testQueue", false, false, true));
+	    	 t.declareQueue(new Queue("testQueue", false, false, false));
 	         t.declareExchange(new FanoutExchange("Axon.EventBus", false, true));
 	     //    t.declareExchange(new TopicExchange("Axon.EventBus", false, false));
 	         t.declareBinding(new Binding("testQueue", Binding.DestinationType.QUEUE, "Axon.EventBus", "", null));
@@ -124,10 +115,10 @@ public class Amqpconfig {
 	        return publisher;
 	    }
 	   
-	   @Bean
-       public  RabbitListenerInit rabbitListenerInit(ConnectionFactory connectionFactory, SimpleEventBus AmqpEventBus) {
+         @Bean
+         public  RabbitListenerInit rabbitListenerInit(ConnectionFactory connectionFactory, SpringAMQPMessageSource springAMQPMessageSource) {
            
-           return new RabbitListenerInit(connectionFactory, AmqpEventBus);
+            return new RabbitListenerInit(connectionFactory, springAMQPMessageSource);
        }
 	
 	   
