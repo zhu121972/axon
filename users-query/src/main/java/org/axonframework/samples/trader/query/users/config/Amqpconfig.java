@@ -75,6 +75,7 @@ public class Amqpconfig {
 	    
 	    @Bean
        public SpringAMQPMessageSource springAMQPMessageSource() {
+	    	
             return new SpringAMQPMessageSource(messageConverter);
         }
         
